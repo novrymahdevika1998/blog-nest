@@ -1,4 +1,6 @@
 <?php
+include "includes/db-connection.php";
+
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -8,22 +10,28 @@ ini_set("display_errors", "off");
 // Initialize a database connection
 $conn = mysqli_connect("localhost", "root", "", "blogprojectdb");
 
-$host = 'localhost';
-$dbname = 'blogprojectdb';
-$username = 'root';
-$password = '';
-
-try {
-    $db = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-    exit;
-}
-
-// Destroy if not possible to create a connection
 if (!$conn) {
     echo "<h3 class='container bg-dark p-3 text-center text-warning rounded-lg mt-5'>Not able to establish Database Connection<h3>";
+}
+
+// Delete users
+
+if (isset($_GET['delete_id'])) {
+    $id = $_GET['delete_id'];
+    $query = "DELETE FROM users WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    echo '<pre>';
+    print_r($pdo->prepare($query));
+    echo '</pre>';
+    die();
+    try {
+        $stmt->execute(['id' => $id]);
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+    header("Location: {$_SERVER['PHP_SELF']}");
+    exit();
 }
 
 // Update User Role
@@ -107,5 +115,16 @@ if (isset($_REQUEST['update'])) {
     mysqli_query($conn, $sql);
 
     header("Location: index.php");
+    exit();
+}
+
+// Delete Authors
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $query = "DELETE FROM users WHERE id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->execute(['id' => $id]);
+
+    header("Location: authors.php");
     exit();
 }

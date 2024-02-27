@@ -56,6 +56,11 @@ include 'includes/db.php';
         </div>
 
     </div>
+    <div class="gradient"></div>
+    <footer>
+        <h2>Blog Nest &middot; Project</h2>
+        <p><small>&copy; 2024 Blog Nest. All rights reserved.</small></p>
+    </footer>
 
 </body>
 

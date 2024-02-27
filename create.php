@@ -50,7 +50,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="create-container">
             <form class="create-form" method="POST">
-                <input type="text" placeholder="Blog Title" class="form-control my-3 bg-dark text-white text-center" name="title">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" placeholder="Blog Title" class="form-control my-3 bg-dark text-white text-center" name="title">
+                </div>
+                <div class="input-file-container">
+                    <label for="image-upload">Pilih gambar</label>
+                    <input id="image-upload" type="file" name="image" accept="image/*">
+                </div>
+                <div id="image-preview"></div>
                 <textarea id="content" name="content" class="form-control my-3 bg-dark text-white" cols="30" rows="10"></textarea>
                 <button type="submit" class="button" name="new_post">Add Post</button>
             </form>
@@ -62,13 +70,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script>
         tinymce.init({
             selector: '#content',
-            plugins: 'autoresize',
-            autoresize_bottom_margin: 16,
+            // plugins: 'autoresize',
+            // autoresize_bottom_margin: 16,
         });
 
         function goBack() {
             window.history.back();
         }
+
+        document.getElementById('image-upload').addEventListener('change', function() {
+            var file = this.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var imgElement = document.createElement('img');
+                    imgElement.setAttribute('src', event.target.result);
+                    imgElement.setAttribute('alt', 'Preview');
+                    imgElement.setAttribute('class', 'preview-image');
+                    document.getElementById('image-preview').innerHTML = '';
+                    document.getElementById('image-preview').appendChild(imgElement);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 </body>
 
