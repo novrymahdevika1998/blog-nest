@@ -57,6 +57,148 @@ img {
     width: 100%;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 0.5rem;
+    border: 1px solid var(--aqua);
+}
+
+th {
+    background-color: var(--dkblue);
+    color: var(--aqua);
+}
+
+td {
+    background-color: var(--plum);
+    color: var(--white);
+}
+
+tr:nth-child(even) {
+    background-color: var(--black);
+}
+
+tr:nth-child(odd) {
+    background-color: var(--dkblue);
+}
+
+tr {
+    text-align: center;
+}
+
+.input-file-container {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.input-file-container input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.input-file-container label {
+    display: block;
+    padding: 10px 15px;
+    background-color: var(--magenta);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.input-file-container label:hover {
+    background-color: var(--hotmag);
+}
+
+.preview-image {
+    max-width: 100%;
+}
+
+/* Table container styles */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* modal styles */
+
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    background-color: var(--dkblue);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid var(--dkblue);
+    width: 50%;
+    border-radius: 5px;
+}
+
+.modal-content p {
+    color: var(--white);
+}
+
+.close {
+    color: var(--black);
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--hotmag);
+}
+
+#deleteConfirm,
+#deleteCancel {
+    font-family: var(--mono);
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
+#deleteConfirm {
+    background-color: var(--hotmag);
+    color: var(--white);
+}
+
+#deleteConfirm:hover {
+    background-color: var(--magenta);
+}
+
+#deleteCancel {
+    background-color: var(--dkblue);
+    color: var(--white);
+}
+
+#deleteCancel:hover {
+    background-color: var(--plum);
+}
 
 /* background color divs */
 
@@ -73,10 +215,9 @@ img {
     height: 2px;
 }
 
-
 /* intro styles */
 
-#intro {
+#intro, #authors, #articles {
     padding: 4rem 1rem 10rem 1rem;
     padding-bottom: 10rem;
     max-width: 1200px;
@@ -216,10 +357,9 @@ input[type="email"]:focus {
 
 .container {
     margin: 0 auto;
-    padding: 2rem;
+    padding: 4rem 1rem;
     background-color: var(--dkblue);
     border-radius: 8px;
-    max-width: 400px;
     width: 100%;
     box-sizing: border-box;
     display: flex;
@@ -231,7 +371,6 @@ input[type="email"]:focus {
 
 .register {
     width: 100%;
-    margin-top: 2rem;
     color: var(--aqua);
 }
 
@@ -289,6 +428,8 @@ a.register-link {
     border-top: 1px solid var(--aqua);
     border-radius: 25px;
 }
+
+
 
 /* footer section */
 

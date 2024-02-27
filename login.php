@@ -1,5 +1,5 @@
 <?php
-include "includes/db.php";
+include "includes/db-connection.php";
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,25 +7,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
 
     $sql = "SELECT * FROM users WHERE username = ?";
-    $stmt = $conn->prepare($sql);
+    $stmt = $pdo->prepare($sql);
 
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt->execute([$username]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        if (password_verify($password, $row["password"])) {
+    if ($result) {
+        if (password_verify($password, $result["password"])) {
             $_SESSION["username"] = $username;
-            $_SESSION["user_id"] = $row["id"];
+            $_SESSION["user_id"] = $result["id"];
 
-            // Update user_role status
-            $id = $_SESSION["user_Id"];
+            $id = $_SESSION["user_id"];
             $sql = "UPDATE user_role SET status = ? WHERE user_id = ?";
-            $stmt = $conn->prepare($sql);
+            $stmt = $pdo->prepare($sql);
             $status = 1;
-            $stmt->bind_param("ii", $status, $id);
-            $stmt->execute();
+            $stmt->execute([$status, $id]);
 
             // Redirect to index.php
             header("Location: index.php");
@@ -36,8 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $errormsg =  "Username is incorrect";
     }
-
-    $stmt->close();
 }
 $conn->close();
 ?>
@@ -53,7 +47,7 @@ $conn->close();
     <link href="https://fonts.googleapis.com/css2?family=Oxygen&family=Oxygen+Mono&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/global.style.css">
-    <title>Blog Project</title>
+    <title>Blog Nest | Login</title>
 </head>
 
 <body>
@@ -76,12 +70,17 @@ $conn->close();
             <?php
             }
             ?>
-            <button type="submit" class="button" name="register">Login</button>
+            <button type="submit" class="button">Login</button>
             <div class="register">
                 <a class="register-link" href="register.php">Belum punya akun?</a>
             </div>
         </form>
     </div>
+    <div class="gradient"></div>
+    <footer>
+        <h2>Blog Nest &middot; Project</h2>
+        <p><small>&copy; 2024 Blog Nest. All rights reserved.</small></p>
+    </footer>
 </body>
 
 </html>
