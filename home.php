@@ -30,54 +30,79 @@ include "includes/db.php";
     <div class="section-blue">
         <section id="articles">
             <h2>Article List</h2>
-            <article>
-                <div class="text">
-                    <h4>Article #1</h4>
-                    <h3>Wall of Wonder</h3>
-                    <p class="blackbox">
-                        Description of the project. This should be fairly concise while
-                        also describing the key components that you developed or worked
-                        on. It can be as long as you need it to be but should at least be
-                        a few sentences long. Be sure to include specific links anywhere
-                        in the description. A link looks like
-                        <a href="https://frontendmasters.github.io/grid-flexbox-v2/">this</a>, and multiple links look <a href="#">like this</a> and
-                        <a href="#">like this</a>.
-                    </p>
-                </div>
-                <img src="https://assets.codepen.io/296057/fem-gettingstartedcss-ch5-1.png" alt="Screenshot of the Wall of Wonder." />
-            </article>
-            <article class="reverse">
-                <div class="text">
-                    <h4>Article #2</h4>
-                    <h3>Feed-A-Star-Mole Game</h3>
-                    <p class="blackbox">
-                        Description of the project. This should be fairly concise while
-                        also describing the key components that you developed or worked
-                        on. It can be as long as you need it to be but should at least be
-                        a few sentences long. Be sure to include specific links anywhere
-                        in the description. A link looks like
-                        <a href="https://frontendmasters.github.io/bootcamp/mole">this</a>, and multiple links look <a href="#">like this</a> and
-                        <a href="#">like this</a>.
-                    </p>
-                </div>
-                <img src="https://assets.codepen.io/296057/fem-gettingstartedcss-ch5-5.png" alt="Screenshot of the Frontend Masters Bootcamp." />
-            </article>
-            <article>
-                <div class="text">
-                    <h4>Article #3</h4>
-                    <h3>Wall of Wonder Collection</h3>
-                    <p class="blackbox">
-                        Description of the project. This should be fairly concise while
-                        also describing the key components that you developed or worked
-                        on. It can be as long as you need it to be but should at least be
-                        a few sentences long. Be sure to include specific links anywhere
-                        in the description. A link looks like
-                        <a href="https://frontendmasters.github.io/grid-flexbox-v2/grid-figure-figcaption">this</a>, and multiple links look <a href="#">like this</a> and
-                        <a href="#">like this</a>.
-                    </p>
-                </div>
-                <img src="https://assets.codepen.io/296057/fem-gettingstartedcss-ch5-4.png" alt="Screenshot of the Wall of Wonder Collections." />
-            </article>
+            <form method="GET">
+                <label for="filter">Cari berdasarkan:</label>
+                <select name="filter" id="filter">
+                    <option value="keyword">Kata kunci</option>
+                    <option value="newest">Paling baru</option>
+                    <option value="oldest">Paling lama</option>
+                </select>
+                <input type="text" name="keyword" placeholder="Masukkan kata kunci">
+                <button type="submit">Terapkan</button>
+            </form>
+            <?php
+            try {
+                $sql = "SELECT p.*, u.first_name, u.last_name FROM posts AS p LEFT JOIN users AS u ON p.author = u.id ";
+
+                $orderBy = "";
+                $filter = isset($_GET['filter']) ? $_GET['filter'] : "";
+
+                if (!empty($filter)) {
+                    switch ($filter) {
+                        case 'keyword':
+                            $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : "";
+                            if (!empty($keyword)) {
+                                $sql .= "WHERE p.title LIKE '%$keyword%' OR p.content LIKE '%$keyword%' ";
+                            }
+                            break;
+                        case 'newest':
+                            $orderBy = "ORDER BY p.created_at DESC ";
+                            break;
+                        case 'oldest':
+                            $orderBy = "ORDER BY p.created_at ASC ";
+                            break;
+                        default:
+                            $orderBy = "ORDER BY p.created_at DESC ";
+                            break;
+                    }
+                }
+
+                $stmt = $pdo->query($sql . $orderBy);
+                $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $index = 0;
+
+                foreach ($posts as $post) {
+                    $index++;
+
+                    $isEven = $index % 2 == 0;
+
+                    $content = strip_tags($post['content']);
+
+                    $readMoreLink = '<a href="view.php?id=' . $post['id'] . '">Read more</a>';
+                    $truncatedContent = substr(htmlspecialchars($content), 0, 200) . "..." . $readMoreLink;
+
+            ?>
+                    <article class="<?php echo $isEven ? 'reverse' : ''; ?>">
+                        <div class="text">
+                            <h4>
+                                <?php echo 'By ' . htmlspecialchars($post['first_name']) . " " . htmlspecialchars($post['last_name']); ?>
+                            </h4>
+                            <h3><?php echo htmlspecialchars($post['title']); ?></h3>
+                            <p class="blackbox">
+                                <?php echo $truncatedContent; ?>
+                            </p>
+                        </div>
+                        <?php if (!empty($post['image_path'])) { ?>
+                            <img src="<?php echo htmlspecialchars($post['image_path']); ?>" alt="Post Image">
+                        <?php } ?>
+                    </article>
+            <?php
+                }
+            } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }
+            ?>
         </section>
     </div>
     <div class="gradient"></div>

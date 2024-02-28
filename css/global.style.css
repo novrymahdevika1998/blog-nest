@@ -90,6 +90,22 @@ tr {
     text-align: center;
 }
 
+select,
+input[type="text"],
+button {
+    padding: 10px;
+    border: 1px solid var(--magenta);
+    border-radius: 5px;
+    background-color: var(--plum);
+    color: var(--white);
+}
+
+select:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--hotmag);
+}
+
 .input-file-container {
     position: relative;
     overflow: hidden;
@@ -260,6 +276,20 @@ tr {
     margin-top: 3rem;
 }
 
+/* post styles */
+
+#detail {
+    padding: 1rem;
+    padding-bottom: 10rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.post-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
 
 /* navigation */
 
@@ -422,6 +452,8 @@ a.register-link {
 }
 
 #articles img {
+    max-width: 640px;
+    max-height: 400px;
     margin: 2rem 0 4rem 0;
     padding: 1rem;
     border-left: 1px solid var(--aqua);
