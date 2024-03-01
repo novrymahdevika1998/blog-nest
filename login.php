@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute([$status, $id]);
 
             // Redirect to index.php
-            header("Location: index.php");
+            header("Location: home.php");
             exit();
         } else {
             $errormsg =  "Password is incorrect";

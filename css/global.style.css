@@ -90,6 +90,22 @@ tr {
     text-align: center;
 }
 
+select,
+input[type="text"],
+button {
+    padding: 10px;
+    border: 1px solid var(--magenta);
+    border-radius: 5px;
+    background-color: var(--plum);
+    color: var(--white);
+}
+
+select:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--hotmag);
+}
+
 .input-file-container {
     position: relative;
     overflow: hidden;
@@ -173,7 +189,9 @@ tr {
 }
 
 #deleteConfirm,
-#deleteCancel {
+#deleteCancel,
+#editConfirm,
+#editCancel {
     font-family: var(--mono);
     padding: 10px 20px;
     border: none;
@@ -182,21 +200,25 @@ tr {
     border-radius: 3px;
 }
 
-#deleteConfirm {
+#deleteConfirm,
+#editConfirm {
     background-color: var(--hotmag);
     color: var(--white);
 }
 
-#deleteConfirm:hover {
+#deleteConfirm:hover,
+#editConfirm:hover {
     background-color: var(--magenta);
 }
 
-#deleteCancel {
+#deleteCancel,
+#editCancel {
     background-color: var(--dkblue);
     color: var(--white);
 }
 
-#deleteCancel:hover {
+#deleteCancel:hover,
+#editCancel:hover {
     background-color: var(--plum);
 }
 
@@ -258,6 +280,20 @@ tr {
 
 #contact p:last-child {
     margin-top: 3rem;
+}
+
+/* post styles */
+
+#detail {
+    padding: 1rem;
+    padding-bottom: 10rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.post-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
 }
 
 
@@ -422,6 +458,8 @@ a.register-link {
 }
 
 #articles img {
+    max-width: 640px;
+    max-height: 400px;
     margin: 2rem 0 4rem 0;
     padding: 1rem;
     border-left: 1px solid var(--aqua);

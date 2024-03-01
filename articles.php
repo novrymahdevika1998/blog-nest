@@ -64,12 +64,11 @@ include "includes/db.php";
                 <tr>
                     <th>No.</th>
                     <th>Title</th>
-                    <th>Content</th>
                     <th>Author</th>
                     <th></th>
                 </tr>
                 <?php
-                $sql = "SELECT * FROM posts LEFT JOIN users ON posts.author = users.id";
+                $sql = "SELECT posts.*, users.username FROM posts LEFT JOIN users ON posts.author = users.id";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
@@ -81,10 +80,9 @@ include "includes/db.php";
                                 <?php echo $row_number; ?>
                             </td>
                             <td><?php echo $row['title']; ?></td>
-                            <td><?php echo $row['content']; ?></td>
                             <td><?php echo $row['username']; ?></td>
                             <td>
-                                <a href="edit_author.php?id=<?php echo $row['id']; ?>">
+                                <a href="edit.php?id=<?php echo $row['id']; ?>">
                                     <span class="fas fa-edit" aria-hidden="true"></span>
                                 </a>
                                 <a id="delete-modal" onclick="confirmDeletion(<?php echo $row['id']; ?>)">
@@ -96,7 +94,7 @@ include "includes/db.php";
                         $row_number++;
                     }
                 } else {
-                    echo "Belum ada penulis";
+                    echo "Belum ada artikel";
                 }
                 $conn->close();
                 ?>
@@ -119,11 +117,11 @@ include "includes/db.php";
     var span = document.getElementsByClassName("close")[0];
     var deleteConfirmBtn = document.getElementById("deleteConfirm");
     var deleteCancelBtn = document.getElementById("deleteCancel");
-    var authorIdToDelete = null;
+    var articleIdToDelete = null;
 
-    function confirmDeletion(authorId) {
+    function confirmDeletion(articleId) {
         modal.style.display = "block";
-        authorIdToDelete = authorId;
+        articleIdToDelete = articleId;
     }
 
     span.onclick = function() {
@@ -131,8 +129,8 @@ include "includes/db.php";
     }
 
     deleteConfirmBtn.onclick = function() {
-        if (authorIdToDelete !== null) {
-            window.location.href = `?delete_id=${authorIdToDelete}`;
+        if (articleIdToDelete !== null) {
+            window.location.href = `?delete_id=${articleIdToDelete}`;
         }
     }
     window.onclick = function(event) {

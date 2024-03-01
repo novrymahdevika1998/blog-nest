@@ -30,6 +30,9 @@ if ($_POST) {
                     $add = $query->execute(array($user_id, 2));
                     $add = $query->execute(array($user_id, 1));
                     $errormsg = "Akun berhasil dibuat";
+
+                    // Redirect after 3 seconds
+                    header("refresh:3;url=login.php");
                 } else {
                     $errormsg = "Akun gagal dibuat";
                 }
@@ -86,7 +89,7 @@ if ($_POST) {
             <?php
             if (!empty($errormsg)) {
             ?>
-                <div class="alert alert-danger mt-1" role="alert">
+                <div class="alert" role="alert">
                     <?php echo $errormsg; ?>
                 </div>
             <?php
@@ -103,6 +106,17 @@ if ($_POST) {
         <h2>Blog Nest &middot; Project</h2>
         <p><small>&copy; 2024 Blog Nest. All rights reserved.</small></p>
     </footer>
+
+    <script>
+        var alert = document.querySelector(".alert");
+
+        // Green if success, red if error
+        if (alert.innerHTML.includes("berhasil")) {
+            alert.style.color = "green";
+        } else {
+            alert.style.color = "red";
+        }
+    </script>
 </body>
 
 </html>
