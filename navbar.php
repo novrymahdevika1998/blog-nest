@@ -8,9 +8,11 @@
                 <a href="index.html"><span class="fas fa-code" aria-hidden="true"></span> Blog Nest</a>
             </h1>
         </li>
-        <li><a href="index.php">Home</a></li>
-        <li><a href="dashboard.php">Dashboard</a></li>
-        <li><a href="create.php">Create</a></li>
+        <?php if (isset($_SESSION["username"])) { ?>
+            <li><a href="home.php">Home</a></li>
+            <li><a href="dashboard.php">Dashboard</a></li>
+            <li><a href="create.php">Create</a></li>
+        <?php } ?>
         <li>
             <?php
             if (isset($_SESSION["username"])) {

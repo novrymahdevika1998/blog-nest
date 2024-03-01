@@ -24,14 +24,16 @@ include "includes/db.php";
         <p>
             A place where you can share your thoughts and ideas with the world.
         </p>
-        <a href="login.php" class="button">Get Started</a>
+        <?php if (!isset($_SESSION['user_id'])) { ?>
+            <a href="login.php" class="button">Get Started</a>
+        <?php } ?>
     </section>
     <div class="gradient"></div>
     <div class="section-blue">
         <section id="articles">
-            <h2>Article List</h2>
+            <h2>Recent Articles</h2>
             <form method="GET">
-                <label for="filter">Cari berdasarkan:</label>
+                <label for="filter">Filter by:</label>
                 <select name="filter" id="filter">
                     <option value="keyword">Kata kunci</option>
                     <option value="newest">Paling baru</option>

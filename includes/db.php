@@ -14,16 +14,12 @@ if (!$conn) {
     echo "<h3 class='container bg-dark p-3 text-center text-warning rounded-lg mt-5'>Not able to establish Database Connection<h3>";
 }
 
-// Delete users
+// Delete article
 
 if (isset($_GET['delete_id'])) {
     $id = $_GET['delete_id'];
-    $query = "DELETE FROM users WHERE id = :id";
+    $query = "DELETE FROM posts WHERE id = :id";
     $stmt = $pdo->prepare($query);
-    echo '<pre>';
-    print_r($pdo->prepare($query));
-    echo '</pre>';
-    die();
     try {
         $stmt->execute(['id' => $id]);
     } catch (PDOException $e) {
@@ -110,17 +106,6 @@ if (isset($_REQUEST['id'])) {
     $query = mysqli_query($conn, $sql);
 }
 
-// Delete a post
-if (isset($_REQUEST['delete'])) {
-    $id = $_REQUEST['id'];
-
-    $sql = "DELETE FROM posts WHERE id = $id";
-    mysqli_query($conn, $sql);
-
-    header("Location: index.php");
-    exit();
-}
-
 // Update a post
 if (isset($_REQUEST['update'])) {
     $id = $_REQUEST['id'];
@@ -131,7 +116,7 @@ if (isset($_REQUEST['update'])) {
     $sql = "UPDATE posts SET title = '$title', content = '$content', author = '$author' WHERE id = $id";
     mysqli_query($conn, $sql);
 
-    header("Location: index.php");
+    header("Location: home.php");
     exit();
 }
 

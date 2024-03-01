@@ -189,7 +189,9 @@ input[type="text"]:focus {
 }
 
 #deleteConfirm,
-#deleteCancel {
+#deleteCancel,
+#editConfirm,
+#editCancel {
     font-family: var(--mono);
     padding: 10px 20px;
     border: none;
@@ -198,21 +200,25 @@ input[type="text"]:focus {
     border-radius: 3px;
 }
 
-#deleteConfirm {
+#deleteConfirm,
+#editConfirm {
     background-color: var(--hotmag);
     color: var(--white);
 }
 
-#deleteConfirm:hover {
+#deleteConfirm:hover,
+#editConfirm:hover {
     background-color: var(--magenta);
 }
 
-#deleteCancel {
+#deleteCancel,
+#editCancel {
     background-color: var(--dkblue);
     color: var(--white);
 }
 
-#deleteCancel:hover {
+#deleteCancel:hover,
+#editCancel:hover {
     background-color: var(--plum);
 }
 
