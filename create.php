@@ -39,19 +39,35 @@ include "includes/db.php";
                 </div>
                 <div id="image-preview"></div>
                 <textarea id="content" name="content" class="form-control my-3 bg-dark text-white" cols="30" rows="10"></textarea>
+
+                <div class="form-group">
+                    <label for="topic">Select Topic</label>
+                    <select id="topics" name="topic" class="form-control">
+                        <option value="1">Technology</option>
+                        <option value="2">Lifestyle</option>
+                        <option value="3">Health</option>
+                        <option value="4">Education</option>
+                        <option value="5">Finance</option>
+                        <option value="6">Travel</option>
+                        <option value="7">Food</option>
+                        <option value="8">Entertainment</option>
+                        <option value="9">Sports</option>
+                        <option value="10">Science</option>
+                    </select>
+                </div>
                 <input type="hidden" name="is_published" value="true">
                 <button type="submit" class="button">Add Post</button>
             </form>
         </div>
     </section>
 
-
+    <!-- tinymce Javascript -->
     <script src="https://cdn.tiny.cloud/1/kvcjcn2r2083od4druogzrbn38f4o0osrkac91hsw7mdl7qe/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <!-- Additional script -->
     <script>
         tinymce.init({
             selector: '#content',
-            // plugins: 'autoresize',
-            // autoresize_bottom_margin: 16,
         });
 
         function goBack() {

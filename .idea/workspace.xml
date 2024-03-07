@@ -35,7 +35,7 @@
   }
 }]]></component>
   <component name="RunManager">
-    <configuration name="home.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/home.php">
+    <configuration name="index.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/index.php">
       <method v="2" />
     </configuration>
   </component>

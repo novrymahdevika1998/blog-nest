@@ -23,7 +23,7 @@ include "includes/db-connection.php";
         <ul>
             <li>
                 <h1>
-                    <a href="home.php"><span class="fas fa-code" aria-hidden="true"></span> Blog Nest</a>
+                    <a href="index.php"><span class="fas fa-code" aria-hidden="true"></span> Blog Nest</a>
                 </h1>
             </li>
         </ul>

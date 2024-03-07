@@ -40,9 +40,8 @@ if (isset($_REQUEST['switch_role'])) {
     $_SESSION['role_id'] = $role;
 }
 
-
 // Get posts
-$sql = "SELECT * FROM posts";
+$sql = "SELECT *, COUNT(*) OVER() as total_count FROM posts";
 $query = mysqli_query($conn, $sql);
 
 // Create a new post
@@ -52,8 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $author = $_SESSION['user_id'];
     $isPublished = isset($_POST['is_published']) && $_POST['is_published'] ? true : false;
     $imagePath = '';
+    $topic = $_POST['topic'] ?? '';
 
-    // Handle file upload
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
         $uploadPath = "uploads/";
@@ -87,16 +86,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ':is_published' => $isPublished,
             ]);
 
+            $postId = $pdo->lastInsertId();
+
+            if ($topic) {
+                $stmt = $pdo->prepare("INSERT INTO post_topics (post_id, topic_id) VALUES (:post_id, :topic_id)");
+                $stmt->execute(['post_id' => $postId, 'topic_id' => $topic]);
+            }
+
             echo "Post added successfully!";
         } catch (PDOException $e) {
             echo "Database error: " . $e->getMessage();
         }
     } else {
-        // Handle error - required fields missing
         echo "Required fields are missing.";
     }
 
-    header("Location: home.php?info=added");
+    header("Location: index.php?info=added");
 }
 
 // Get a post
@@ -116,7 +121,7 @@ if (isset($_REQUEST['update'])) {
     $sql = "UPDATE posts SET title = '$title', content = '$content', author = '$author' WHERE id = $id";
     mysqli_query($conn, $sql);
 
-    header("Location: home.php");
+    header("Location: index.php");
     exit();
 }
 
