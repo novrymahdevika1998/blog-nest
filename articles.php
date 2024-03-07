@@ -1,5 +1,6 @@
 <?php
 include "includes/db.php";
+include "includes/db-connection.php";
 ?>
 
 <!DOCTYPE html>
@@ -30,12 +31,24 @@ include "includes/db.php";
                     <th></th>
                 </tr>
                 <?php
-                $sql = "SELECT posts.*, users.username FROM posts LEFT JOIN users ON posts.author = users.id";
-                $result = $conn->query($sql);
+                $itemsPerPage = 10;
+                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                $offset = ($page - 1) * $itemsPerPage;
 
-                if ($result->num_rows > 0) {
+                $sql = "SELECT posts.*, users.username, COUNT(*) OVER() AS total_count FROM posts LEFT JOIN users ON posts.author = users.id LIMIT :limit OFFSET :offset";
+                $result = $pdo->prepare($sql);
+
+                $result->bindParam(':limit', $itemsPerPage, PDO::PARAM_INT);
+                $result->bindParam(':offset', $offset, PDO::PARAM_INT);
+                $result->execute();
+
+                $items = $result->fetchAll();
+
+                if ($result->rowCount() > 0) {
                     $row_number = 1;
-                    while ($row = $result->fetch_assoc()) {
+                    foreach ($items as $row) {
+                        $totalItems = $row['total_count'];
+                        $totalPages = ceil($totalItems / $itemsPerPage);
                 ?>
                         <tr>
                             <td>
@@ -58,13 +71,23 @@ include "includes/db.php";
                 } else {
                     echo "Belum ada artikel";
                 }
-                $conn->close();
                 ?>
             </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <?php
+                    for ($i = 1; $i <= $totalPages; $i++) {
+                        echo '<li class="page-item ';
+                        echo ($page == $i) ? 'active' : '';
+                        echo '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+                    }
+                    ?>
+                </ul>
+            </nav>
         </div>
     </div>
 
-    <div id="deleteModal" class="modal">
+    <div id=" deleteModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <p>Apakah anda yakin akan menghapus penulis ini?</p>

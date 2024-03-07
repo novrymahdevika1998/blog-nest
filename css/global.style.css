@@ -473,7 +473,8 @@ a.register-link {
     line-height: 1.5;
 }
 
-#articles ul {
+#articles ul,
+#authors ul{
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -512,6 +513,48 @@ a.register-link {
 .card-body {
     padding: 20px;
     /* Add padding inside the card body */
+}
+
+/* Pagination styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li:first-child {
+    flex-basis: auto;
+}
+
+.page-item {
+    margin: 0 2px;
+}
+
+.page-link {
+    display: block;
+    padding: 5px 10px;
+    background-color: var(--plum);
+    color: var(--white);
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: var(--sans);
+    font-size: var(--font-size);
+}
+
+.page-link:hover,
+.page-link:focus {
+    background-color: var(--magenta);
+    color: var(--white);
+    outline: none;
+    border: none;
+}
+
+/* Active state */
+.page-item.active .page-link {
+    background-color: var(--hotmag);
+    color: var(--white);
 }
 
 
@@ -556,7 +599,8 @@ footer ul {
         text-align: right;
     }
 
-    #articles ul {
+    #articles ul,
+    #authors ul {
         justify-content: flex-end;
     }
 
@@ -596,6 +640,10 @@ footer ul {
         flex-basis: auto;
         text-align: left;
         margin-right: auto;
+    }
+
+    .pagination li:first-child {
+        margin-right: 0;
     }
 }
 

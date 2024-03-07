@@ -59,12 +59,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <th></th>
                 </tr>
                 <?php
-                $sql = "SELECT * FROM users";
-                $result = $conn->query($sql);
+                $itemsPerPage = 10;
+                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                $offset = ($page - 1) * $itemsPerPage;
 
-                if ($result->num_rows > 0) {
+                $sql = "SELECT *, COUNT(*) OVER() AS total_count FROM users LIMIT :limit OFFSET :offset";
+                $result = $pdo->prepare($sql);
+
+                $result->bindParam(':limit', $itemsPerPage, PDO::PARAM_INT);
+                $result->bindParam(':offset', $offset, PDO::PARAM_INT);
+                $result->execute();
+
+                $items = $result->fetchAll();
+
+                if ($result->rowCount() > 0) {
                     $row_number = 1;
-                    while ($row = $result->fetch_assoc()) {
+                    foreach ($items as $row) {
+                        $totalItems = $row['total_count'];
+                        $totalPages = ceil($totalItems / $itemsPerPage);
                 ?>
                         <tr>
                             <td>
@@ -88,9 +100,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     echo "Belum ada penulis";
                 }
-                $conn->close();
                 ?>
             </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <?php
+                    for ($i = 1; $i <= $totalPages; $i++) {
+                        echo '<li class="page-item ';
+                        echo ($page == $i) ? 'active' : '';
+                        echo '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+                    }
+                    ?>
+                </ul>
+            </nav>
         </div>
     </div>
 
