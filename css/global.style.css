@@ -1,5 +1,3 @@
-/* Variables declared here - these are the colors for our pages, as well as the font stacks and sizes. */
-
 :root {
     --black: #171321;
     --dkblue: #0d314b;
@@ -12,9 +10,6 @@
     --mono: "Oxygen mono", monospace;
     --sans: Oxygen, sans-serif;
 }
-
-
-/* border box model: https://css-tricks.com/box-sizing/ */
 
 html {
     box-sizing: border-box;
@@ -139,6 +134,24 @@ input[type="text"]:focus {
 
 .preview-image {
     max-width: 100%;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--magenta);
+    border-radius: 5px;
+    background-color: var(--plum);
+    color: var(--white);
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="white" stroke-width="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>');    /* Adds custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--hotmag);
 }
 
 /* Table container styles */
@@ -416,6 +429,20 @@ a.register-link {
     text-decoration: none;
 }
 
+/* Dashboard section */
+#dashboard {
+    padding: 0 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-charts {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
 /* articles section */
 
 #articles {
@@ -467,6 +494,25 @@ a.register-link {
     border-radius: 25px;
 }
 
+/* Card styles */
+
+.card {
+    width: 600px;
+    /* Set width of the card */
+    margin: 20px auto;
+    /* Center the card horizontally with some space above and below */
+    border: 1px solid #ccc;
+    /* Add a border */
+    border-radius: 10px;
+    /* Add some border radius for rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Add a subtle box shadow */
+}
+
+.card-body {
+    padding: 20px;
+    /* Add padding inside the card body */
+}
 
 
 /* footer section */
@@ -527,6 +573,16 @@ footer ul {
 
     #articles .reverse ul {
         justify-content: flex-start;
+    }
+
+    #dashboard {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .dashboard-charts {
+        flex-direction: row;
+        gap: 2rem;
     }
 }
 

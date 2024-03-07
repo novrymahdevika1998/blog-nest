@@ -1,67 +1,134 @@
 <?php
-include 'includes/auth.php';
-include 'includes/db.php';
+include "includes/db.php";
 ?>
+
 <!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Oxygen&family=Oxygen+Mono&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/global.style.css">
-    <title>Blog Project</title>
+    <title>Homepage</title>
 </head>
 
 <body>
-    <?php include "navbar.php" ?>
-    <div class="container mt-5">
-
-        <!-- Display any info -->
-        <?php if (isset($_REQUEST['info'])) { ?>
-            <?php if ($_REQUEST['info'] == "added") { ?>
-                <div class="alert alert-success" role="alert">
-                    Post has been added successfully
-                </div>
-            <?php } ?>
+    <?php
+    if (isset($_SESSION['role_id'])) {
+        $_SESSION['role_id'] == 1 ? include "navbar-admin.php" : include "navbar.php";
+    } else {
+        include "navbar.php";
+    }
+    ?>
+    <section id="intro">
+        <p class="name">Welcome to <span>Blog Nest.</span></p>
+        <p>
+            A place where you can share your thoughts and ideas with the world.
+        </p>
+        <?php if (!isset($_SESSION['user_id'])) { ?>
+            <a href="login.php" class="button">Get Started</a>
         <?php } ?>
+    </section>
+    <div class="gradient"></div>
+    <div class="section-blue">
+        <section id="articles">
+            <h2>Recent Articles</h2>
+            <form method="GET">
+                <label for="filter">Filter by:</label>
+                <select name="filter" id="filter">
+                    <option value="newest">Paling baru</option>
+                    <option value="oldest">Paling lama</option>
+                </select>
+                <input type="text" name="keyword" placeholder="Masukkan kata kunci">
+                <button type="submit">Terapkan</button>
+            </form>
+            <?php
+            try {
+                $sql = "SELECT p.*, u.first_name, u.last_name FROM posts AS p LEFT JOIN users AS u ON p.author = u.id ";
 
-        <?php if ($_SESSION['role_id'] === 1) : ?>
-            <h2>LU ADMIN BANG</h2>
-        <?php endif; ?>
+                $orderBy = "";
+                $filter = isset($_GET['filter']) ? $_GET['filter'] : "";
 
-        <!-- Create a new Post button -->
-        <div class="text-center">
-            <a href="create.php">
-                <button class="btn btn-outline-dark">+ Create a new post</button>
-            </a>
-        </div>
+                if (!empty($filter)) {
 
-        <!-- Display posts from database -->
-        <div class="row">
-            <?php foreach ($query as $q) { ?>
-                <div class="col-12 col-lg-4 d-flex justify-content-center">
-                    <div class="card text-white bg-dark mt-5" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $q['title']; ?></h5>
-                            <p class="card-text"><?php echo substr($q['content'], 0, 50); ?>...</p>
-                            <a href="view.php?id=<?php echo $q['id'] ?>" class="btn btn-light">Read More <span class="text-danger">&rarr;</span></a>
+                    $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : "";
+                    if (!empty($keyword)) {
+                        $sql .= "WHERE p.title LIKE '%$keyword%' OR p.content LIKE '%$keyword%' ";
+                    }
+
+                    switch ($filter) {
+                        case 'newest':
+                            $orderBy = "ORDER BY p.created_at DESC ";
+                            break;
+                        case 'oldest':
+                            $orderBy = "ORDER BY p.created_at ASC ";
+                            break;
+                        default:
+                            $orderBy = "ORDER BY p.created_at DESC ";
+                            break;
+                    }
+                }
+
+                $stmt = $pdo->query($sql . $orderBy);
+                $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $index = 0;
+
+                foreach ($posts as $post) {
+                    $index++;
+
+                    $isEven = $index % 2 == 0;
+
+                    $content = strip_tags($post['content']);
+
+                    $readMoreLink = '<a href="view.php?id=' . $post['id'] . '">Read more</a>';
+                    $truncatedContent = substr(htmlspecialchars($content), 0, 200) . "..." . $readMoreLink;
+
+            ?>
+                    <article class="<?php echo $isEven ? 'reverse' : ''; ?>">
+                        <div class="text">
+                            <h4>
+                                <?php echo 'By ' . htmlspecialchars($post['first_name']) . " " . htmlspecialchars($post['last_name']); ?>
+                            </h4>
+                            <h3><?php echo htmlspecialchars($post['title']); ?></h3>
+                            <p class="blackbox">
+                                <?php echo $truncatedContent; ?>
+                            </p>
+                            <h4>Topics:</h4>
+                            <ul>
+                                <?php
+                                $stmt = $pdo->prepare("SELECT t.name FROM topics AS t LEFT JOIN post_topics AS pt ON t.id = pt.topic_id WHERE pt.post_id = :post_id");
+                                $stmt->execute([':post_id' => $post['id']]);
+                                $topics = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                foreach ($topics as $topic) {
+                                    echo "<li>" . htmlspecialchars($topic['name']) . "</li>";
+                                }
+                                ?>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-            <?php } ?>
-        </div>
-
+                        <?php if (!empty($post['image_path'])) { ?>
+                            <img src="<?php echo htmlspecialchars($post['image_path']); ?>" alt="Post Image">
+                        <?php } ?>
+                    </article>
+            <?php
+                }
+            } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }
+            ?>
+        </section>
     </div>
     <div class="gradient"></div>
     <footer>
         <h2>Blog Nest &middot; Project</h2>
         <p><small>&copy; 2024 Blog Nest. All rights reserved.</small></p>
     </footer>
-
 </body>
 
 </html>

@@ -16,15 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $result["password"])) {
             $_SESSION["username"] = $username;
             $_SESSION["user_id"] = $result["id"];
+            $_SESSION["role_id"] = $result["role_id"];
 
-            $id = $_SESSION["user_id"];
-            $sql = "UPDATE user_role SET status = ? WHERE user_id = ?";
-            $stmt = $pdo->prepare($sql);
-            $status = 1;
-            $stmt->execute([$status, $id]);
 
-            // Redirect to index.php
-            header("Location: home.php");
+            header("Location: index.php");
             exit();
         } else {
             $errormsg =  "Password is incorrect";
