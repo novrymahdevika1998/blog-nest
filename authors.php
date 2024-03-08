@@ -2,23 +2,23 @@
 include "includes/db.php";
 include "includes/db-connection.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate input
-    $user_id = $_POST['user_id'];
-    $new_role_id = $_POST['new_role_id'];
+if (isset($_GET['new_role_id'])) {
+    $new_role_id = $_GET['new_role_id'];
+    $user_id = $_GET['user_id'];
+    echo '<pre>';
+    print_r($new_role_id);
+    echo '</pre>';
+    die();
 
-    // Check if user_id and new_role_id are set and numeric
+
     if (isset($user_id) && isset($new_role_id) && is_numeric($user_id) && is_numeric($new_role_id)) {
-        // Update status in user_role table for the corresponding user and role
-        // Set status = 0 for all roles of the user first
-        $update_user_role_status_query = "UPDATE user_role SET status = 0 WHERE user_id = :user_id";
-        $stmt = $pdo->prepare($update_user_role_status_query);
-        $stmt->execute(['user_id' => $user_id]);
 
-        // Then set status = 1 for the selected role
-        $update_selected_role_query = "UPDATE user_role SET status = 1 WHERE user_id = :user_id AND role_id = :role_id";
-        $stmt = $pdo->prepare($update_selected_role_query);
-        $stmt->execute(['user_id' => $user_id, 'role_id' => $new_role_id]);
+        $sql = "UPDATE users SET role_id = :role_id WHERE id = :user_id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':role_id', $new_role_id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
 
         // Redirect to a page after successful role update
         header("Location: users_list.php");
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <th></th>
                 </tr>
                 <?php
-                $itemsPerPage = 10;
+                $itemsPerPage = 5;
                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                 $offset = ($page - 1) * $itemsPerPage;
 
@@ -121,16 +121,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span class="close">&times;</span>
             <h2>Edit Author Role</h2>
             <form id="editRoleForm">
-                <input type="hidden" id="userId" name="userId">
                 <div>
-                    <label for="userRole">Select Role:</label>
-                    <select id="userRole" name="userRole">
+                    <label for="new_role_id">Select Role:</label>
+                    <select id="new_role_id" name="new_role_id">
                         <option value="1">Admin</option>
                         <option value="2">User</option>
                     </select>
                 </div>
-                <button id="editConfirm" type="button">Submit</button>
-                <button id="editCancel">Cancel</button>
+                <div class="modal-form-action">
+                    <button id="editConfirm" type="submit">Submit</button>
+                    <button id="editCancel">Cancel</button>
+                </div>
             </form>
         </div>
     </div>
@@ -143,6 +144,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button id="deleteCancel">Cancel</button>
         </div>
     </div>
+    <div class="gradient"></div>
+    <footer>
+        <h2>Blog Nest &middot; Project</h2>
+        <p><small>&copy; 2024 Blog Nest. All rights reserved.</small></p>
+    </footer>
 </body>
 <script>
     // Get the modal
@@ -153,8 +159,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     var authorIdToDelete = null;
 
     var editRoleModal = document.getElementById('editRoleModal');
-    var userId = document.getElementById('userId').value = userId;
-    var currentRoleId = document.getElementById('userRole').value = currentRoleId;
     var editConfirmBtn = document.getElementById('editConfirm');
     var editCancelBtn = document.getElementById('editCancel');
     var authorIdToEdit = null;
@@ -187,9 +191,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    editConfirmBtn.onclick = function() {
-        if (authorIdToDelete !== null) {
-            window.location.href = `?edit_id=${authorIdToEdit}&role_id=${roleIdToEdit}`;
+    editConfirmBtn.onclick = function(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        var selectedRoleId = document.getElementById('new_role_id').value;
+
+        if (authorIdToEdit !== null && selectedRoleId !== null) {
+            window.location.href = `?user_id=${authorIdToEdit}&role_id=${selectedRoleId}`;
         }
     }
 

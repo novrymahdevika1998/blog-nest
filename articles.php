@@ -31,7 +31,7 @@ include "includes/db-connection.php";
                     <th></th>
                 </tr>
                 <?php
-                $itemsPerPage = 10;
+                $itemsPerPage = 2;
                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                 $offset = ($page - 1) * $itemsPerPage;
 
@@ -95,6 +95,11 @@ include "includes/db-connection.php";
             <button id="deleteCancel">Cancel</button>
         </div>
     </div>
+    <div class="gradient"></div>
+    <footer>
+        <h2>Blog Nest &middot; Project</h2>
+        <p><small>&copy; 2024 Blog Nest. All rights reserved.</small></p>
+    </footer>
 </body>
 <script>
     // Get the modal
