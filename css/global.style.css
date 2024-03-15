@@ -322,6 +322,46 @@ select:focus {
     margin-bottom: 1rem;
 }
 
+/* author styles */
+
+/* Style for the author's information section */
+
+#detail-author {
+    background-color: var(--dkblue);
+    padding: 20px 0;
+}
+
+.author {
+    display: flex;
+    align-items: center;
+}
+
+.author-avatar {
+    margin-right: 20px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--plum);
+    color: var(--white);
+    font-size: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.author-info h1 {
+    color: var(--aqua);
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.author-info p {
+    color: var(--aqua);
+    margin: 5px 0;
+}
 
 /* navigation */
 
@@ -475,6 +515,21 @@ a.register-link {
     font-size: 1rem;
     font-family: var(--mono);
     margin: 0;
+}
+
+#articles h4 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#articles h4 a {
+    cursor: default;
+}
+
+#articles h4 a:hover {
+    text-decoration: underline;
+    color: var(--magenta);
+    cursor: pointer;
 }
 
 .blackbox {

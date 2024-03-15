@@ -8,6 +8,7 @@
         <li><a href="dashboard.php">Dashboard</a></li>
         <li><a href="articles.php">Articles</a></li>
         <li><a href="authors.php">Authors</a></li>
+        <li><a href="edit-profile.php">Edit Profile</a></li>
         <li>
             <?php
             if (isset($_SESSION["username"])) {

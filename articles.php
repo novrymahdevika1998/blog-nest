@@ -22,7 +22,12 @@ include "includes/db-connection.php";
 
     <div id="articles">
         <div class="table-container">
-            <h1>List Articles</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h1>List Articles</h1>
+                <a href="create.php">
+                    <span class="fas fa-plus" aria-hidden="true"></span>
+                </a>
+            </div>
             <table>
                 <tr>
                     <th>No.</th>
