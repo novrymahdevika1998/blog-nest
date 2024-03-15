@@ -12,6 +12,7 @@
             <li><a href="index.php">Home</a></li>
             <li><a href="dashboard.php">Dashboard</a></li>
             <li><a href="create.php">Create</a></li>
+            <li><a href="edit-profile.php">Edit profile</a></li>
         <?php } ?>
         <li>
             <?php

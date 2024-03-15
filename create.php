@@ -16,7 +16,15 @@ include "includes/db.php";
 </head>
 
 <body>
-
+    <nav>
+        <ul>
+            <li>
+                <h1>
+                    <a href="index.php"><span class="fas fa-code" aria-hidden="true"></span> Blog Nest</a>
+                </h1>
+            </li>
+        </ul>
+    </nav>
     <section id="create">
         <h1>Create Blog Post</h1>
 
@@ -60,6 +68,11 @@ include "includes/db.php";
             </form>
         </div>
     </section>
+    <div class="gradient"></div>
+    <footer>
+        <h2>Blog Nest &middot; Project</h2>
+        <p><small>&copy; 2024 Blog Nest. All rights reserved.</small></p>
+    </footer>
 
     <!-- tinymce Javascript -->
     <script src="https://cdn.tiny.cloud/1/kvcjcn2r2083od4druogzrbn38f4o0osrkac91hsw7mdl7qe/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>

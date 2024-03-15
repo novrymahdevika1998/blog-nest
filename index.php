@@ -41,17 +41,18 @@ include "includes/db.php";
             <form method="GET">
                 <label for="filter">Filter by:</label>
                 <select name="filter" id="filter">
+                    <option value="popular">Paling Populer</option>
                     <option value="newest">Paling baru</option>
                     <option value="oldest">Paling lama</option>
                 </select>
-                <input type="text" name="keyword" placeholder="Masukkan kata kunci">
-                <button type="submit">Terapkan</button>
+                <input type="text" name="keyword" placeholder="Masukkan kata kunci" style="margin-top: .8rem;">
+                <button type="submit" style="margin-top: .8rem;">Terapkan</button>
             </form>
             <?php
             try {
                 $sql = "SELECT p.*, u.first_name, u.last_name FROM posts AS p LEFT JOIN users AS u ON p.author = u.id ";
 
-                $orderBy = "";
+                $orderBy = "ORDER BY p.total_views DESC";
                 $filter = isset($_GET['filter']) ? $_GET['filter'] : "";
 
                 if (!empty($filter)) {
@@ -67,6 +68,9 @@ include "includes/db.php";
                             break;
                         case 'oldest':
                             $orderBy = "ORDER BY p.created_at ASC ";
+                            break;
+                        case 'popular':
+                            $orderBy = "ORDER BY p.total_views DESC ";
                             break;
                         default:
                             $orderBy = "ORDER BY p.created_at DESC ";
@@ -92,9 +96,10 @@ include "includes/db.php";
             ?>
                     <article class="<?php echo $isEven ? 'reverse' : ''; ?>">
                         <div class="text">
-                            <h4>
-                                <?php echo 'By ' . htmlspecialchars($post['first_name']) . " " . htmlspecialchars($post['last_name']); ?>
-                            </h4>
+                            <?php
+                            echo '<h4><a href="author.php?author_id=' . $post['author'] . '">' . 'By ' . htmlspecialchars($post['first_name']) . " " . htmlspecialchars($post['last_name']) . '</a></h4>';
+                            echo '<h4>' . 'on' . ' ' . date('F j, Y', strtotime($post['created_at'])) . '</h4>';
+                            ?>
                             <h3><?php echo htmlspecialchars($post['title']); ?></h3>
                             <p class="blackbox">
                                 <?php echo $truncatedContent; ?>

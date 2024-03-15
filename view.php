@@ -2,6 +2,21 @@
 
 include "includes/db-connection.php";
 
+if (isset($_GET['id'])) {
+    $articleID = $_GET['id'];
+
+    $checkNullQuery = $pdo->prepare("SELECT total_views FROM posts WHERE id = ?");
+    $checkNullQuery->execute([$articleID]);
+    $totalViews = $checkNullQuery->fetchColumn();
+
+    if ($totalViews === null) {
+        $incrementQuery = $pdo->prepare("UPDATE posts SET total_views = 1 WHERE id = ?");
+        $incrementQuery->execute([$articleID]);
+    } else {
+        $incrementQuery = $pdo->prepare("UPDATE posts SET total_views = total_views + 1 WHERE id = ?");
+        $incrementQuery->execute([$articleID]);
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +57,7 @@ include "includes/db-connection.php";
                 <div class="post-detail">
                     <h1 class="post-title"><?php echo htmlspecialchars($post['title']); ?></h1>
                     <p class="post-caption">By <?php echo htmlspecialchars($post['first_name']) . " " . htmlspecialchars($post['last_name']); ?></p>
+                    <p class="post-caption">Published on <?php echo date("F j, Y", strtotime($post['created_at'])); ?></p>
                     <?php if (!empty($post['image_path'])) { ?>
                         <img class="post-image" src="<?php echo htmlspecialchars($post['image_path']); ?>" alt="Post Image">
                     <?php } ?>

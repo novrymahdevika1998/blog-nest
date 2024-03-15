@@ -187,6 +187,19 @@ select:focus {
 
 .modal-content p {
     color: var(--white);
+    margin-bottom: 1.2rem;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-content .modal-form-action {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
 }
 
 .close {
@@ -309,6 +322,46 @@ select:focus {
     margin-bottom: 1rem;
 }
 
+/* author styles */
+
+/* Style for the author's information section */
+
+#detail-author {
+    background-color: var(--dkblue);
+    padding: 20px 0;
+}
+
+.author {
+    display: flex;
+    align-items: center;
+}
+
+.author-avatar {
+    margin-right: 20px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--plum);
+    color: var(--white);
+    font-size: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.author-info h1 {
+    color: var(--aqua);
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.author-info p {
+    color: var(--aqua);
+    margin: 5px 0;
+}
 
 /* navigation */
 
@@ -431,7 +484,7 @@ a.register-link {
 
 /* Dashboard section */
 #dashboard {
-    padding: 0 1rem;
+    padding: 0 1rem 2.5rem 0;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -464,6 +517,21 @@ a.register-link {
     margin: 0;
 }
 
+#articles h4 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#articles h4 a {
+    cursor: default;
+}
+
+#articles h4 a:hover {
+    text-decoration: underline;
+    color: var(--magenta);
+    cursor: pointer;
+}
+
 .blackbox {
     padding: 1rem;
     border-radius: 10px;
@@ -473,7 +541,8 @@ a.register-link {
     line-height: 1.5;
 }
 
-#articles ul {
+#articles ul,
+#authors ul{
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -512,6 +581,48 @@ a.register-link {
 .card-body {
     padding: 20px;
     /* Add padding inside the card body */
+}
+
+/* Pagination styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li:first-child {
+    flex-basis: auto;
+}
+
+.page-item {
+    margin: 0 2px;
+}
+
+.page-link {
+    display: block;
+    padding: 5px 10px;
+    background-color: var(--plum);
+    color: var(--white);
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-family: var(--sans);
+    font-size: var(--font-size);
+}
+
+.page-link:hover,
+.page-link:focus {
+    background-color: var(--magenta);
+    color: var(--white);
+    outline: none;
+    border: none;
+}
+
+/* Active state */
+.page-item.active .page-link {
+    background-color: var(--hotmag);
+    color: var(--white);
 }
 
 
@@ -556,7 +667,8 @@ footer ul {
         text-align: right;
     }
 
-    #articles ul {
+    #articles ul,
+    #authors ul {
         justify-content: flex-end;
     }
 
@@ -597,13 +709,17 @@ footer ul {
         text-align: left;
         margin-right: auto;
     }
+
+    .pagination li:first-child {
+        margin-right: 0;
+    }
 }
 
 /* Create section */
 
 #create {
     width: 100%;
-    padding: 4rem 1rem;
+    padding: 0 2rem 2.5rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
